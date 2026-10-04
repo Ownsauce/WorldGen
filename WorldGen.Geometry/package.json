@@ -1,0 +1,8 @@
+{
+  "name": "com.worldgen.geometry",
+  "version": "0.1.0",
+  "displayName": "WorldGen Geometry",
+  "description": "Engine-neutral constructive mesh evaluation for WorldGen recipes.",
+  "unity": "6000.0",
+  "dependencies": { "com.worldgen.core": "0.1.0" }
+}

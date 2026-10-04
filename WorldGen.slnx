@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="WorldGen.Core/WorldGen.Core.csproj" />
+  <Project Path="WorldGen.Geometry/WorldGen.Geometry.csproj" />
+</Solution>

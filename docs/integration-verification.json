@@ -1,0 +1,18 @@
+{
+  "contentVersion": "temple-pilot-1",
+  "assetCount": 1,
+  "catalogTests": 7,
+  "coreRegression": "passed",
+  "geometryRegression": "passed",
+  "isolatedUnityImport": {
+    "passed": true,
+    "assets": 1,
+    "persistentMeshesAndMaterials": true,
+    "collisionBoxes": 3,
+    "compatiblePlacement": true,
+    "idempotentReimport": true
+  },
+  "standaloneExtractedExample": "passed",
+  "clientAssembliesCompile": "passed with existing warnings",
+  "appearanceAndTraversal": "pending client review"
+}

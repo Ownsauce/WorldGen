@@ -1,0 +1,33 @@
+import * as THREE from 'three';import fs from 'node:fs';import assert from 'node:assert/strict';import {polygonFaces} from '../polygon_selection.js';
+import {extractFaces} from '../mesh_split.js';
+const elements=new Map();function element(){return {value:'',checked:false,disabled:false,options:[],events:{},append(o){this.options.push(o);if(this.options.length===1)this.value=String(o.value)},replaceChildren(){this.options=[];this.value=''},addEventListener(t,fn){this.events[t]=fn}}}
+const $=id=>{if(!elements.has(id))elements.set(id,element());return elements.get(id)};
+const document={createElement:element,createElementNS:()=>({...element(),setAttribute(){}})};const status=t=>{$('status').textContent=t};const partColor=i=>new THREE.Color().setHSL(i*.2,.7,.5);
+const model=new THREE.Group();const mesh=new THREE.Mesh(new THREE.BoxGeometry(),new THREE.MeshStandardMaterial());model.add(mesh);mesh.name='Body';
+const canvas=element();canvas.getBoundingClientRect=()=>({left:0,top:0,width:400,height:400});canvas.setPointerCapture=()=>{};
+const camera=new THREE.PerspectiveCamera(45,1,.1,100);camera.position.set(0,0,4);camera.lookAt(0,0,0);camera.updateMatrixWorld();
+const views=[{}, {model,camera,renderer:{domElement:canvas},controls:{enabled:true}}];const packaged={scene:model};
+const meshParts=model=>{const arr=[];model?.traverse(o=>{if(o.isMesh&&!o.userData.splitOverlay)arr.push(o)});return arr};
+const setPreviewTab=()=>{};globalThis.requestAnimationFrame=fn=>fn();$('split-size').value='4';
+const code=fs.readFileSync(new URL('../src.js',import.meta.url),'utf8').split('// Manual regions are attached to the exact selected/exported mesh topology.')[1].split('function animate()')[0];
+eval(code+`
+$('split-method').value='brush';resetSplit();assert.equal(splitState.labels.length,12);
+$('split-name').value='torso';$('split-add').events.click();assert.deepEqual(splitState.regions,['torso']);
+$('split-brush').checked=true;$('split-brush').events.change();assert.equal(views[1].controls.enabled,false);
+const event={button:0,clientX:200,clientY:200,pointerId:1,stopImmediatePropagation(){},preventDefault(){}};
+canvas.events.pointerdown(event);canvas.events.pointerup();assert(splitState.labels.some(x=>x===1));assert.equal(splitState.undo.length,1);assert(splitOverlay);assert.equal(meshParts(model).length,1);
+$('split-name').value='legs';$('split-add').events.click();canvas.events.pointerdown(event);canvas.events.pointerup();assert(splitState.labels.some(x=>x===2));
+$('split-undo').events.click();assert(!splitState.labels.some(x=>x===2));assert(splitState.labels.some(x=>x===1));
+$('split-undo').events.click();assert(!splitState.labels.some(x=>x>0));assert.equal(splitOverlay,null);assert.equal($('split-apply').disabled,true);
+$('split-method').value='polygon';$('split-method').events.change();
+$('split-region').value='1';
+for(const [x,y] of [[100,100],[300,100],[300,300],[100,300]])canvas.events.pointerdown({...event,clientX:x,clientY:y});
+assert.equal(polygonPoints.length,4);assert(!splitState.labels.some(x=>x));assert.equal($('polygon-finish').disabled,false);
+$('polygon-finish').events.click();assert.equal(splitState.labels.filter(x=>x===1).length,2);assert.equal(polygonPoints.length,0);
+$('split-undo').events.click();assert(!splitState.labels.some(x=>x));
+$('polygon-through').checked=true;
+for(const [x,y] of [[100,100],[300,100],[300,300],[100,300]])canvas.events.pointerdown({...event,clientX:x,clientY:y});
+$('polygon-finish').events.click();assert.equal(splitState.labels.filter(x=>x===1).length,12);
+canvas.events.pointerdown(event);$('polygon-back').events.click();assert.equal(polygonPoints.length,0);
+console.log('PASS polygon completion, select-through, point undo, assignment undo; brush hit selection, region reassignment, overlay exclusion, undo and empty-selection controls');
+`);

@@ -1,0 +1,14 @@
+import * as THREE from 'three';import assert from 'node:assert/strict';
+import {insidePolygon,polygonFaces} from '../polygon_selection.js';
+const square=[{x:.2,y:.2},{x:.8,y:.2},{x:.8,y:.8},{x:.2,y:.8}];
+assert(insidePolygon({x:.5,y:.5},square));assert(!insidePolygon({x:.1,y:.5},square));
+const concave=[{x:0,y:0},{x:1,y:0},{x:1,y:.3},{x:.3,y:.3},{x:.3,y:1},{x:0,y:1}];assert(!insidePolygon({x:.8,y:.8},concave));assert(insidePolygon({x:.1,y:.8},concave));
+const mesh=new THREE.Mesh(new THREE.BoxGeometry(),new THREE.MeshStandardMaterial());
+const camera=new THREE.PerspectiveCamera(45,1,.1,100);camera.position.set(0,0,4);camera.lookAt(0,0,0);camera.updateMatrixWorld();
+assert.equal(polygonFaces(mesh,camera,square,[mesh],true).length,12);
+assert.equal(polygonFaces(mesh,camera,square,[mesh],false).length,2);
+const blocker=new THREE.Mesh(new THREE.PlaneGeometry(2,2),new THREE.MeshStandardMaterial());blocker.position.z=1;blocker.updateMatrixWorld();
+assert.equal(polygonFaces(mesh,camera,square,[mesh,blocker],false).length,0);
+assert.equal(polygonFaces(mesh,camera,square,[mesh,blocker],true).length,12);
+assert.equal(polygonFaces(mesh,camera,[{x:0,y:0},{x:.05,y:0},{x:0,y:.05}],[mesh],true).length,0);
+console.log('PASS polygon interior/concavity, visible-only faces, front/back selection, occlusion and empty polygons');

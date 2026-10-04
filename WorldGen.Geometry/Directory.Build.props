@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <!-- Unity imports this directory as source. Keep SDK artifacts outside the package. -->
+    <BaseOutputPath>../tmp/dotnet-build/WorldGen.Geometry/bin/</BaseOutputPath>
+    <BaseIntermediateOutputPath>../tmp/dotnet-build/WorldGen.Geometry/obj/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>../tmp/dotnet-build/WorldGen.Geometry/obj/</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>

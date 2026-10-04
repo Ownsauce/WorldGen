@@ -1,0 +1,14 @@
+{
+  "name": "worldgen-glb-compression",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "python3 server.py",
+    "test": "node tests/mesh_split.test.mjs && node tests/polygon_selection.test.mjs && node tests/mesh_split_ui.test.mjs"
+  },
+  "dependencies": {
+    "three": "0.186.1",
+    "esbuild": "0.28.2"
+  }
+}

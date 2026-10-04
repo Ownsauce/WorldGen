@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "purpose": "doorway-frame",
+  "dimensionsMeters": {
+    "x": 3.3,
+    "y": 3.5,
+    "z": 0.38
+  },
+  "pivot": "bottom-center",
+  "allowedRotations": [
+    0,
+    90,
+    180,
+    270
+  ],
+  "placement": {
+    "slot": "doorway-frame",
+    "openingWidthMeters": 2.2,
+    "openingHeightMeters": 2.8
+  },
+  "clearance": {
+    "centerMeters": {
+      "x": 0,
+      "y": 1.4,
+      "z": 0
+    },
+    "sizeMeters": {
+      "x": 2.2,
+      "y": 2.8,
+      "z": 0.78
+    }
+  },
+  "collision": {
+    "mode": "boxes",
+    "boxes": [
+      {
+        "centerMeters": {
+          "x": -1.375,
+          "y": 1.4,
+          "z": 0
+        },
+        "sizeMeters": {
+          "x": 0.5499999999999998,
+          "y": 2.8,
+          "z": 0.38
+        }
+      },
+      {
+        "centerMeters": {
+          "x": 1.375,
+          "y": 1.4,
+          "z": 0
+        },
+        "sizeMeters": {
+          "x": 0.5499999999999998,
+          "y": 2.8,
+          "z": 0.38
+        }
+      },
+      {
+        "centerMeters": {
+          "x": 0,
+          "y": 3.15,
+          "z": 0
+        },
+        "sizeMeters": {
+          "x": 3.3,
+          "y": 0.7000000000000002,
+          "z": 0.38
+        }
+      }
+    ]
+  },
+  "sockets": [
+    {
+      "id": "front",
+      "positionMeters": {
+        "x": 0,
+        "y": 0,
+        "z": 0.19
+      },
+      "forward": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "widthMeters": 2.2,
+      "heightMeters": 2.8
+    },
+    {
+      "id": "back",
+      "positionMeters": {
+        "x": 0,
+        "y": 0,
+        "z": -0.19
+      },
+      "forward": {
+        "x": 0,
+        "y": 0,
+        "z": -1
+      },
+      "widthMeters": 2.2,
+      "heightMeters": 2.8
+    }
+  ],
+  "notes": "Measured static mesh clearance; appearance and in-game traversal still require client review."
+}

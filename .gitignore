@@ -1,0 +1,72 @@
+# .NET and JavaScript build output/dependencies
+**/bin/
+**/obj/
+**/node_modules/
+/artifacts/
+/dist/
+
+# Python caches and local environments
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Editor and operating-system files
+.idea/
+.vs/
+.vscode/
+*.user
+*.suo
+*.userprefs
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Disposable work, caches and logs
+/tmp/
+/cache/
+/exports/
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Local secrets and agent configuration
+.env
+.env.*
+!.env.example
+*.credentials
+*.credentials.*
+credentials.json
+credentials.*.json
+*.secrets.json
+secrets.json
+*.token
+*.tokens
+*.pfx
+*.p12
+*.pem
+*.key
+/.agents/
+/.codex/
+
+# Large authoring models and intermediate variants are local working assets.
+# Keep optimized custom game.glb models, asset.json, and reference images in Git.
+/Assets/**/*.glb
+/Assets/**/*.gltf
+/Assets/**/*.fbx
+/Assets/**/*.blend
+/Assets/**/*.blend1
+!/Assets/**/game.glb
+
+# AO installations and extracted database resources stay local.
+/AOClient/
+/AOClientCopy/
+/Anarchy Online/
+/NativeCopies/
+AOAssetCache/
+*.aois
+*.collision
+.publish.lock

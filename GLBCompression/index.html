@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GLB Compression</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><h1>GLB Compression</h1><p>Load an FBX, GLB or glTF with its linked files, reduce mesh detail and texture size, then compare the result beside the source.</p></header>
+  <div class="toolbar">
+    <label class="picker">Choose FBX / GLB / glTF files<input id="files" type="file" multiple accept=".fbx,.glb,.gltf,.bin,.png,.jpg,.jpeg,.webp,.ktx2"></label>
+    <button id="convert" disabled>Convert</button>
+    <div class="percent-control"><label for="detail-range">Mesh detail</label><input id="detail-range" type="range" min="1" max="100" value="100"><div class="percent-entry"><input id="detail-number" type="number" min="1" max="100" value="100" aria-label="Mesh detail percent"><span>%</span></div></div>
+    <div class="percent-control"><label for="texture-range">Texture size</label><input id="texture-range" type="range" min="1" max="100" value="100"><div class="percent-entry"><input id="texture-number" type="number" min="1" max="100" value="100" aria-label="Texture size percent"><span>%</span></div></div>
+    <label>Reduction method <select id="reduction-method"><option value="blender" selected>Blender decimation</option><option value="browser">Browser simplifier</option></select></label>
+    <label><input id="linked" type="checkbox" checked> Link cameras</label>
+    <button id="reset" disabled>Reset cameras</button>
+    <span id="status">Choose a model to begin.</span>
+  </div>
+  <main>
+    <section><h2>Original model <span id="original-size" class="file-size"></span></h2><div id="original" class="viewport"></div><p id="original-info"></p></section>
+    <section><h2>Selected detail <span id="converted-size" class="file-size"></span></h2><div class="preview-tabs" role="tablist" aria-label="Selected preview"><button id="model-tab" role="tab" aria-selected="true">Model</button><button id="uv-tab" role="tab" aria-selected="false">UV layout</button></div><div id="converted" class="viewport" role="tabpanel"><svg id="polygon-overlay" viewBox="0 0 1000 1000" preserveAspectRatio="none" hidden aria-hidden="true"></svg></div><div id="uv-panel" hidden role="tabpanel"><div class="uv-controls"><label>Mesh <select id="uv-mesh"></select></label><label><input id="uv-texture" type="checkbox" checked> Texture background</label></div><canvas id="uv-canvas" width="1024" height="1024"></canvas><p id="uv-info"></p></div><p id="converted-info"></p></section>
+  </main>
+  <section id="manual-split" class="inspection"><h2>Manual component splitting</h2><p>Convert first. Add a region name, enable selection, and click polygon points around an area on the selected model. Finish each polygon to assign its faces. Add all your regions, then click Split all named regions once. Disable selection to orbit and select the back.</p><div class="split-controls"><label>Mesh <select id="split-mesh"></select></label><input id="split-name" placeholder="e.g. torso" aria-label="New component name"><button id="split-add">Add region</button><label>Assign region <select id="split-region"></select></label><label>Selection <select id="split-method"><option value="polygon" selected>Polygon</option><option value="brush">Brush</option></select></label><label><input id="split-brush" type="checkbox"> Enable selection</label><label id="brush-controls" hidden>Brush radius <input id="split-size" type="range" min="4" max="60" value="20"></label><div id="polygon-controls"><label><input id="polygon-through" type="checkbox"> Select through (front + back)</label><button id="polygon-finish" disabled>Finish polygon</button><button id="polygon-back" disabled>Undo point</button><button id="polygon-cancel" disabled>Cancel polygon</button></div><label><input id="split-erase" type="checkbox"> Erase assignment</label><button id="split-undo" disabled>Undo assignment</button><button id="split-apply" disabled>Split all named regions</button></div><p id="polygon-info"></p><p id="split-count">Convert a model first to begin splitting.</p><p>Unassigned faces become a remainder mesh. UVs, materials and bone weights are retained. Cuts leave open edges; morph targets are not supported. Changing compression settings rebuilds from the original, so split after choosing your final detail level.</p></section>
+  <section class="inspection"><h2>Inspect imported and exported parts</h2><label>Inspect <select id="inspect-target"><option value="0">Original</option><option value="1">Selected / exported</option></select></label> <label><input id="show-bones" type="checkbox"> Show bones through model</label> <label><input id="color-parts" type="checkbox"> Color parts</label> <button id="show-parts">Show all parts / clear highlight</button><p>Part visibility and bone overlays affect the preview only. All parts remain in downloads.</p><p id="rig-info">Load a model to inspect its components.</p><p id="component-note"></p><p id="selected-part" aria-live="polite"></p><div id="parts-list"></div></section>
+  <div class="output">
+    <div class="output-head"><h2>Generated files</h2><button id="download-glb" disabled>Download GLB</button><button id="download-fbx" disabled>Download FBX</button><button id="download-meta" disabled>Download metadata JSON</button></div>
+    <div class="toolbar">
+      <label>UV bake size <select id="uv-resolution"><option>256</option><option>512</option><option selected>1024</option><option>2048</option></select></label>
+      <button id="unwrap-uv" disabled>Unwrap UVs + preserve textures</button>
+      <label>Apply base-color image <input id="base-color-file" type="file" accept=".png,.jpg,.jpeg,.webp" disabled></label>
+    </div>
+    <p>UV unwrapping rebakes existing material maps onto the new layout. Applying an image uses the current UVs; it does not infer texture placement.</p>
+    <p id="face-count">Choose the mesh percentage yourself; no automatic 30,000-face cap.</p>
+    <p id="summary">The selected GLB contains the model, UVs, materials, and textures. Metadata JSON is optional and small.</p>
+    <details><summary>View metadata JSON</summary><pre id="json-preview"></pre></details>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

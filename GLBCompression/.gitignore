@@ -1,0 +1,10 @@
+# Rebuild the browser bundle with npm ci && npm run build.
+/app.js
+/dist/
+/node_modules/
+
+# Local conversion input/output; tool source files stay tracked.
+*.model.json
+*.glb
+*.gltf
+*.bin
